@@ -1,12 +1,14 @@
 import './App.css';
 import Header from './Header';
-// import MyDropzone from './Upload'
+import Upload from './Upload'
+import Images from './Images';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      {/* <MyDropzone /> */}
+      <Upload />
+      <Images />
     </div>
   );
 }
