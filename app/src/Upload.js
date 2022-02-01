@@ -67,7 +67,7 @@ const Upload = () => {
   function uploadPhoto() {
     const data = new FormData()
     data.append('file', files)
-    data.append('tags', ["hello", "new"])
+    data.append('tags', ["hello", "new", "test"])
     // axios
     //   .post(baseURL, data)
     //   .headers("Content-Type"= "multipart/form-data" }
