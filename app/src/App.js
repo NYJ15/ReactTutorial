@@ -1,14 +1,11 @@
 import './App.css';
-import Header from './Header';
-import Upload from './Upload'
-import Images from './Images';
-
+import Components from './Components';
+import Header from './Components/Header';
 function App() {
   return (
-    <div className="App">
+    <div>
       <Header />
-      <Upload />
-      <Images />
+      <Components />
     </div>
   );
 }
