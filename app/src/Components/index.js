@@ -9,8 +9,11 @@ import {
 } from "react-router-dom";
 
 
-import Upload from './Upload'
+import Upload from './Upload';
 import Images from './Images';
+import SignUp from './Register';
+import Albums from './Albums';
+import Search from './Search';
 
 
 const Components = () => {
@@ -18,7 +21,10 @@ const Components = () => {
         <Router>
             <Routes>
             <Route path = "/upload" element={<Upload />} />
-            <Route path = "/" element={<Images />}  />
+            <Route path = "/" element={<Albums />} />
+            <Route path = "/images" element={<Images />}  />
+            <Route path = "/register" element={<SignUp />} />
+            <Route path = "/search" element={<Search />} />
             </Routes>
         </Router>
     );
