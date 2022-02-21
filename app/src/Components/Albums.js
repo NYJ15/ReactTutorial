@@ -1,62 +1,74 @@
 import React from 'react';
 import axios from "axios";
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { styled } from '@mui/material/styles';
 import FolderIcon from '@mui/icons-material/Folder';
 import Box from '@mui/material/Box';
+import { Link } from 'react-router-dom';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
 
 
 const baseURL = "http://0.0.0.0:8080/albums";
 
+const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    height: 60,
+    lineHeight: '60px',
+}));
+
 const Albums = () => {
     const [albums, setAlbums] = React.useState(null);
-
-    const Demo = styled('div')(({ theme }) => ({
-        backgroundColor: theme.palette.background.paper,
-    }));
+    const lightTheme = createTheme({ palette: { mode: 'light' } });
 
     React.useEffect(() => {
         axios.get(baseURL).then((response) => {
-            setAlbums(response.data);
+            setAlbums(response.data['result']);
             console.log(response.data)
         });
     }, []);
 
-    if (!albums) return null;
 
     return (
-        <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="60vh"
-        >
-            <Grid >
-                <Typography variant="h6" component="div">
-                    My Albums
-                </Typography>
 
-                <Demo>
-                    <List>
-                        {albums['result'].map((item) => (
-                            <ListItem>
-                                <ListItemIcon>
-                                    <FolderIcon />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={item.album_name}
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Demo>
+        <Grid container spacing={2} justifyContent="center"
+            alignItems="center" minHeight="80vh">
+
+            <Grid item xs={5}>
+                <ThemeProvider theme={lightTheme}>
+                    <h1 style={{ marginLeft: "40%" }}>Albums</h1>
+                    {albums && albums.length > 0 ?
+                        <Box
+                            sx={{
+                                p: 2,
+                                bgcolor: 'background.default',
+                                display: 'grid',
+                                gridTemplateColumns: { md: '1fr 1fr' },
+                                gap: 2,
+
+                            }}
+                        >
+                            {albums.map((item) => (
+                                <Link to={"/images/" + item.album_id} key={item.album_id} style={{ textDecoration: 'none', }}>
+                                    <Item key={item.album_id} elevation="8" sx={{
+                                        display: 'flex',
+                                        alignItems: 'center', justifyContent: 'left'
+                                    }}>
+                                        <FolderIcon sx={{ p: 1 }} />
+                                        {item.album_name}
+                                    </Item>
+                                </Link>
+                            ))}
+                        </Box>
+                        :
+
+                        <h4 style={{ marginLeft: "43%" }}>No Albums</h4>
+                    }
+                </ThemeProvider>
             </Grid>
-        </Box>
+
+        </Grid>
 
     );
 }

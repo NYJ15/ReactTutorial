@@ -1,97 +1,82 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from "axios";
-import { styled, alpha } from '@mui/material/styles';
+import { Box, TextField, InputAdornment} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import InputBase from '@mui/material/InputBase';
-import Box from '@mui/material/Box';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
 
 
 const baseURL = " http://0.0.0.0:8080/search_tags";
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: '20ch',
-      },
-    },
-  }));
-  
-
-const SearchDiv = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.black, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.black, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  }));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-
 function Search() {
+
+  const [images, setImages] = React.useState(null);
 
 
   const searchTags = (event) => {
     console.log(event.target.value);
-    axios
-      .post(baseURL, JSON.stringify({ "search": event.target.value }), {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then((response) => {
-        console.log(response.data["images"])
-        // successfully uploaded response
-        // alert(response.data["result"])
-        // window.location = '/';
-      })
-      .catch((error) => {
-        // error response
-        console.log(error)
-      });
+
+    if (!(event.target.value)) {
+      setImages(null);
+    }
+    else {
+      axios
+        .post(baseURL, JSON.stringify({ "search": event.target.value }), {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then((response) => {
+          console.log(response.data["images"])
+          setImages(response.data);
+        })
+        .catch((error) => {
+          // error response
+          console.log(error)
+        });
+    }
 
   }
+  return (
+    <div>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="30vh"
+      >
+        <TextField label="Search by Tags" id="outlined-search" type="search" onChange={searchTags} 
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon sx={{color: "#1976d2"}}/>
+            </InputAdornment>
+          )
+        }}
+        />
+      </Box>
 
-    return (
-        <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="30vh"
-        >
-        <SearchDiv style={{ color: "black" }} >
-            <SearchIconWrapper >
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              onClick={searchTags}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </SearchDiv>
-          </Box>
-    )
+      {images &&
+
+        <ImageList sx={{ width: 1200, height: "auto", margin: "10px 50px 50px 100px" }} cols={3} gap={8} m={2} pt={3}>
+          {images['images'].map((item) => (
+            <ImageListItem key={item._id}>
+              <img
+                src={`${item._source.path}?w=161&fit=crop&auto=format`}
+                srcSet={`${item._source.path}?w=161&fit=crop&auto=format&dpr=2 2x`}
+                alt={item._source.name}
+                loading="lazy"
+                style={{ height: "300px" }} />
+              <ImageListItemBar
+                title={item._source.name}
+                subtitle={item._source.tags} />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      }
+    </div>
+  )
 
 }
 

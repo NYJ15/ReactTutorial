@@ -13,8 +13,8 @@ const changeRouteHome = () => {
   window.location = '/';
 }
 
-const changeRouteImages = () => {
-  window.location = '/images';
+const changeRouteMyAlbums = () => {
+  window.location = '/';
 }
 
 const changeRouteUpload = () => {
@@ -111,11 +111,11 @@ export default function Header() {
           <Box sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: '20px' }}>
 
             <Typography
-              key="Images"
-              onClick={changeRouteImages}
+              key="My Albums"
+              onClick={changeRouteMyAlbums}
               sx={{ color: 'white', fontFamily: 'Halimum', fontSize: 18 }}
             >
-              Images
+              My Albums
             </Typography>
 
           </Box>

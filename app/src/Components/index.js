@@ -22,7 +22,7 @@ const Components = () => {
             <Routes>
             <Route path = "/upload" element={<Upload />} />
             <Route path = "/" element={<Albums />} />
-            <Route path = "/images" element={<Images />}  />
+            <Route path = "/images/:id" element={<Images />}  />
             <Route path = "/register" element={<SignUp />} />
             <Route path = "/search" element={<Search />} />
             </Routes>
