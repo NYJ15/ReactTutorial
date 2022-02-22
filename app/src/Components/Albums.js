@@ -33,7 +33,7 @@ const Albums = () => {
     return (
 
         <Grid container spacing={2} justifyContent="center"
-            alignItems="center" minHeight="80vh">
+            alignItems="center" minHeight="50vh">
 
             <Grid item xs={5}>
                 <ThemeProvider theme={lightTheme}>

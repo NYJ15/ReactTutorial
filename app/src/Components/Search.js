@@ -5,7 +5,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles({
+  root: {
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#1976d2",
+      borderWidth: "2px"
+    },
+    "& .MuiOutlinedInput-input": {
+      color: "#1976d2"
+    },
+    "& .MuiInputLabel-outlined": {
+      color: "#1976d2"
+    }
+  }
+});
 
 const baseURL = " http://0.0.0.0:8080/search_tags";
 
@@ -38,6 +53,9 @@ function Search() {
     }
 
   }
+
+  const classes = useStyles();
+
   return (
     <div>
       <Box
@@ -54,6 +72,7 @@ function Search() {
             </InputAdornment>
           )
         }}
+        className={classes.root}
         />
       </Box>
 

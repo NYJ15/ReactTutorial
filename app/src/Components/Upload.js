@@ -5,10 +5,27 @@ import axios from "axios";
 import "./Upload.css"
 import { Box, TextField, Button } from '@mui/material';
 import BackupIcon from '@mui/icons-material/Backup';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  root: {
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#1976d2",
+      borderWidth: "2px"
+    },
+    "& .MuiOutlinedInput-input": {
+      color: "#1976d2"
+    },
+    "& .MuiInputLabel-outlined": {
+      color: "#1976d2"
+    }
+  }
+});
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -25,6 +42,7 @@ function Upload() {
   const [{ alt, src }, setPreview] = useState(initialState);
   const [oldAlbums, setOldAlbums] = React.useState();
   const [apiResponse, setResponse] = React.useState();
+  const [severity, setSeverity] = React.useState();
 
   const [value, setValue] = React.useState(null);
   const filter = createFilterOptions();
@@ -43,7 +61,6 @@ function Upload() {
 
   React.useEffect(() => {
     axios.get("http://0.0.0.0:8080/albums").then((response) => {
-      console.log(response.data)
       setOldAlbums(response.data['result']);
     });
   }, []);
@@ -66,6 +83,7 @@ function Upload() {
       .then((response) => {
         // successfully uploaded response
         setResponse(response.data["result"])
+        setSeverity("success")
         setState({
           open: true, ...{
             vertical: 'top',
@@ -76,8 +94,14 @@ function Upload() {
 
       })
       .catch((error) => {
-        // error response
-        alert(error)
+        setResponse(error.response.data['result'])
+        setSeverity("error")
+        setState({
+          open: true, ...{
+            vertical: 'top',
+            horizontal: 'center',
+          }
+        });
       });
   };
 
@@ -94,21 +118,25 @@ function Upload() {
     );
   };
 
+  const classes = useStyles();
+
   return (
-    <div>
+    <div style={{marginTop: "4%"}}>
       <form onSubmit={submitForm} style={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
-
+        alignItems: "center",
       }}>
+
         <Box m={2} pt={3}
           sx={{
             display: 'flex',
             flexDirection: 'column',
             '& .MuiTextField-root': { width: '25ch' },
             justifyContent: "space-between",
-            p: 8, border: '1px solid #c9dcf4'
+            p: 8, border: '1px solid #c9dcf4',
+            background: "linear-gradient(#a1e5f3, #ecfafd)"
+
           }}>
           <Button variant="outlined" sx={{
             width: "70%", marginBottom: "10px", marginLeft: "40px", border: 'none', '&:hover': {
@@ -118,6 +146,15 @@ function Upload() {
           }}>
             Upload Image
           </Button>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+            <img className="preview" src={src} alt={alt} style={{ width: "250px", marginTop: "5px", marginBottom: "10px" }} />
+
+          </Box>
           <Autocomplete
             value={value}
             onChange={(event, newValue) => {
@@ -164,33 +201,40 @@ function Upload() {
               return option.album_name;
             }}
             renderOption={(props, option) => <li {...props}>{option.album_name}</li>}
-            // sx={{ width: 300 }}
             freeSolo
+            sx={{ color: "#1976d2" }}
             renderInput={(params) => (
-              <TextField {...params} label="Album Name" />
+              <TextField {...params}
+                label="Album Name"
+                InputLabelProps={{ style: { color: "#1976d2", borderColor: "#1976d2" } }}
+                className={classes.root}
+              />
             )}
           />
 
           {/* <TextField label="Album Name" color="secondary" id="margin-normal" margin="normal" focused onChange={(e) => setAlbum(e.target.value)} /> */}
-          <TextField label="Tags" color="secondary" id="margin-normal" margin="normal" focused onChange={(e) => setTags(e.target.value)} />
+          <TextField label="Tags" color="info" id="margin-normal" margin="normal" onChange={(e) => setTags(e.target.value)} className={classes.root}/>
           <Box pt={1} sx={{
-            color: "#9d27b0",
-            border: 1,
-            width: "70%",
-            height: "30px",
-            marginLeft: "40px"
+            color: "#1976d2",
+            alignItems: 'center',
+            justifyContent: "center",
+            display: 'flex',
           }}>
 
             <label htmlFor="fileUpload" style={{
-              display: 'flex',
-              alignItems: 'center',
               justifyContent: "center",
-            }}><AttachFileIcon /> Choose Image</label>
+              padding: "8px",
+              borderRadius: "50%",
+              borderStyle: "solid",
+              borderWidth: "2px",
+              borderColor: "#1976d2"
+            }}><BackupIcon /> </label>
             <input type="file" id="fileUpload" onChange={fileHandler} style={{ display: 'none' }} />
 
           </Box>
 
-          <Button variant="outlined" type="submit" endIcon={<BackupIcon />} sx={{ width: "70%", marginTop: "10px", marginLeft: "40px", }}>
+          <Button variant="contained" type="submit" endIcon={<CloudDoneIcon />}
+            sx={{ width: "70%", marginTop: "10px", marginLeft: "40px", }}>
             Submit
           </Button>
 
@@ -198,15 +242,7 @@ function Upload() {
         </Box>
 
       </form>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}>
-        <img className="preview" src={src} alt={alt} style={{ width: "20%", marginTop: "10px" }} />
 
-      </Box>
 
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
@@ -214,7 +250,7 @@ function Upload() {
         onClose={handleClose}
         key={vertical + horizontal}
       >
-        <Alert severity="success">{apiResponse}</Alert>
+        <Alert severity={severity}>{apiResponse}</Alert>
       </Snackbar>
 
     </div>
