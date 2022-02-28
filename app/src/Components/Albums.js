@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 
-
 const baseURL = "http://0.0.0.0:8080/albums";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -25,7 +24,6 @@ const Albums = () => {
     React.useEffect(() => {
         axios.get(baseURL).then((response) => {
             setAlbums(response.data['result']);
-            console.log(response.data)
         });
     }, []);
 

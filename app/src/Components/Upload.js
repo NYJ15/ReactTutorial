@@ -72,6 +72,18 @@ function Upload() {
     const dataArray = new FormData();
     dataArray.append("album", Album)
     dataArray.append("tags", tags);
+    
+    if (uploadFile == null) {
+      setResponse("Please choose a file")
+      setSeverity("error")
+      setState({
+        open: true, ...{
+          vertical: 'top',
+          horizontal: 'center',
+        }
+      });
+    }
+    else {
     dataArray.append("file", uploadFile[0]);
 
     axios
@@ -103,6 +115,7 @@ function Upload() {
           }
         });
       });
+    }
   };
 
   const fileHandler = event => {

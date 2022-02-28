@@ -143,17 +143,7 @@ export default function Header() {
 
           </Box>
           <Box sx={{ flexGrow: 1 }} />
-          {/* <Search style={{ color: "white" }} >
-            <SearchIconWrapper >
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              onClick={searchTags}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search> */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          {/* <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
               size="large"
               edge="end"
@@ -166,7 +156,7 @@ export default function Header() {
             >
               <AccountCircle />
             </IconButton>
-          </Box>
+          </Box> */}
 
 
         </Toolbar>

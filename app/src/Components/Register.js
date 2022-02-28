@@ -20,7 +20,6 @@ export default function SignUp() {
         event.preventDefault();
         const data = new FormData(event.target);
 
-        console.log(data)
         axios
             .post(baseURL, data, {
                 headers: {

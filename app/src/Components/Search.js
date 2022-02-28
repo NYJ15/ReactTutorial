@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import { Box, TextField, InputAdornment} from '@mui/material';
+import { Box, TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   }
 });
 
-const baseURL = " http://0.0.0.0:8080/search_tags";
+const baseURL = "http://0.0.0.0:8080/search_tags";
 
 function Search() {
 
@@ -30,8 +30,6 @@ function Search() {
 
 
   const searchTags = (event) => {
-    console.log(event.target.value);
-
     if (!(event.target.value)) {
       setImages(null);
     }
@@ -64,15 +62,15 @@ function Search() {
         alignItems="center"
         minHeight="30vh"
       >
-        <TextField label="Search by Tags" id="outlined-search" type="search" onChange={searchTags} 
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon sx={{color: "#1976d2"}}/>
-            </InputAdornment>
-          )
-        }}
-        className={classes.root}
+        <TextField label="Search by Tags" id="outlined-search" type="search" onChange={searchTags}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "#1976d2" }} />
+              </InputAdornment>
+            )
+          }}
+          className={classes.root}
         />
       </Box>
 
