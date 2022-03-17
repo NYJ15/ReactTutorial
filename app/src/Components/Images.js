@@ -9,7 +9,11 @@ import { Box, TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
+import RadioGroup, { useRadioGroup } from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 // import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 // import IconButton from '@mui/material/IconButton';
 
@@ -23,9 +27,36 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const StyledFormControlLabel = styled((props) => <FormControlLabel {...props} />)(
+  ({ theme }) => ({
+    '.MuiFormControlLabel-label': {
+      color: theme.palette.primary.main,
+      FontFamily: "Raleway"
+    }
+  }),
+);
+
+function MyFormControlLabel(props) {
+  const radioGroup = useRadioGroup();
+
+  let checked = false;
+
+  if (radioGroup) {
+    checked = radioGroup.value === props.value;
+  }
+
+  return <StyledFormControlLabel checked={checked} {...props} />;
+}
+
+MyFormControlLabel.propTypes = {
+  value: PropTypes.any,
+};
+
 
 function Images() {
   const [images, setImages] = React.useState(null);
+  const [searchParam, setSearchParam] = React.useState("tags")
+
   const [state, setState] = React.useState({
     open: false,
     vertical: 'top',
@@ -40,6 +71,7 @@ function Images() {
 
   React.useEffect(() => {
     axios.get(baseURL + id).then((response) => {
+      console.log(response.data['images'])
       setImages(response.data);
     });
   }, []);
@@ -47,8 +79,12 @@ function Images() {
   if (!images) return null;
 
   const searchTags = (event) => {
+
       axios
-        .post("http://0.0.0.0:8080/search_tags", JSON.stringify({ "search": event.target.value, "album_id": id}), {
+        .post("http://0.0.0.0:8080/search_tags", JSON.stringify({
+           "search": event.target.value, 
+           "parameter": searchParam,
+           "album_id": id}), {
           headers: {
             "Content-Type": "application/json"
           }
@@ -88,9 +124,20 @@ function Images() {
         display="flex"
         justifyContent="center"
         alignItems="center"
+        minHeight="12vh"
+      >
+        <RadioGroup name="use-radio-group" defaultValue="tags" row>
+          <MyFormControlLabel value="tags" label="Search By Tags" control={<Radio color="secondary" onClick={() => setSearchParam("tags")} />} />
+          <MyFormControlLabel value="text" label="Search By Text" control={<Radio color="secondary" onClick={() => setSearchParam("text")} />} />
+        </RadioGroup>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
         minHeight="auto"
       >
-        <TextField label="Search by Tags" id="outlined-search" type="search" onChange={searchTags}
+        <TextField label="Search" id="outlined-search" type="search" onChange={searchTags}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

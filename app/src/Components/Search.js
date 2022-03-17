@@ -6,6 +6,11 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { makeStyles } from "@material-ui/core/styles";
+import RadioGroup, { useRadioGroup } from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 
 const useStyles = makeStyles({
   root: {
@@ -22,12 +27,37 @@ const useStyles = makeStyles({
   }
 });
 
+const StyledFormControlLabel = styled((props) => <FormControlLabel {...props} />)(
+  ({ theme }) => ({
+    '.MuiFormControlLabel-label': {
+      color: theme.palette.primary.main,
+      FontFamily: "Raleway"
+    }
+  }),
+);
+
+function MyFormControlLabel(props) {
+  const radioGroup = useRadioGroup();
+
+  let checked = false;
+
+  if (radioGroup) {
+    checked = radioGroup.value === props.value;
+  }
+
+  return <StyledFormControlLabel checked={checked} {...props} />;
+}
+
+MyFormControlLabel.propTypes = {
+  value: PropTypes.any,
+};
+
 const baseURL = "http://0.0.0.0:8080/search_tags";
 
 function Search() {
+  const [searchParam, setSearchParam] = React.useState("tags")
 
   const [images, setImages] = React.useState(null);
-
 
   const searchTags = (event) => {
     if (!(event.target.value)) {
@@ -35,13 +65,15 @@ function Search() {
     }
     else {
       axios
-        .post(baseURL, JSON.stringify({ "search": event.target.value }), {
+        .post(baseURL, JSON.stringify({ 
+          "search": event.target.value,
+          "parameter": searchParam
+        }), {
           headers: {
             "Content-Type": "application/json"
           }
         })
         .then((response) => {
-          console.log(response.data["images"])
           setImages(response.data);
         })
         .catch((error) => {
@@ -60,9 +92,30 @@ function Search() {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        minHeight="30vh"
+        minHeight="auto"
       >
-        <TextField label="Search by Tags" id="outlined-search" type="search" onChange={searchTags}
+      <h1 >Search</h1>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="12vh"
+      >
+        <RadioGroup name="use-radio-group" defaultValue="tags" row>
+          <MyFormControlLabel value="tags" label="Search By Tags" control={<Radio color="secondary" onClick={() => setSearchParam("tags")} />} />
+          <MyFormControlLabel value="text" label="Search By Text" control={<Radio color="secondary" onClick={() => setSearchParam("text")} />} />
+          <MyFormControlLabel value="both" label="Search By Both" control={<Radio color="secondary" onClick={() => setSearchParam("both")} />} />
+
+        </RadioGroup>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="12vh"
+      >
+        <TextField label="Search" id="outlined-search" type="search" onChange={searchTags}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
