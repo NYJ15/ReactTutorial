@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.font-link {
+  font-family: 'Poppins', sans-serif;
+}

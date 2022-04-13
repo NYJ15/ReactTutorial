@@ -14,7 +14,7 @@ import Images from './Images';
 import SignUp from './Register';
 import Albums from './Albums';
 import Search from './Search';
-
+import Edit from './EditImage'
 
 const Components = () => {
     return(
@@ -25,6 +25,7 @@ const Components = () => {
             <Route path = "/images/:id" element={<Images />}  />
             <Route path = "/register" element={<SignUp />} />
             <Route path = "/search" element={<Search />} />
+            <Route path ="/edit/:id" element={<Edit />} />
             </Routes>
         </Router>
     );

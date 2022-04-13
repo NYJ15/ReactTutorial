@@ -15,14 +15,17 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles({
   root: {
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#1976d2",
-      borderWidth: "2px"
+      borderColor: "#000000a8",
+      borderWidth: "2px",
+      fontFamily: "Poppins"
     },
     "& .MuiOutlinedInput-input": {
-      color: "#1976d2"
+      color: "#000000a8",
+      fontFamily: "Poppins"
     },
     "& .MuiInputLabel-outlined": {
-      color: "#1976d2"
+      color: "#000000a8",
+      fontFamily: "Poppins"
     }
   }
 });
@@ -72,7 +75,7 @@ function Upload() {
     const dataArray = new FormData();
     dataArray.append("album", Album)
     dataArray.append("tags", tags);
-    
+
     if (uploadFile == null) {
       setResponse("Please choose a file")
       setSeverity("error")
@@ -84,37 +87,37 @@ function Upload() {
       });
     }
     else {
-    dataArray.append("file", uploadFile[0]);
+      dataArray.append("file", uploadFile[0]);
 
-    axios
-      .post(baseURL, dataArray, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      })
-      .then((response) => {
-        // successfully uploaded response
-        setResponse(response.data["result"])
-        setSeverity("success")
-        setState({
-          open: true, ...{
-            vertical: 'top',
-            horizontal: 'center',
+      axios
+        .post(baseURL, dataArray, {
+          headers: {
+            "Content-Type": "multipart/form-data"
           }
-        });
-        setTimeout(() => { window.location = '/images/' + response.data['album_id']; }, 1500);
+        })
+        .then((response) => {
+          // successfully uploaded response
+          setResponse(response.data["result"])
+          setSeverity("success")
+          setState({
+            open: true, ...{
+              vertical: 'top',
+              horizontal: 'center',
+            }
+          });
+          setTimeout(() => { window.location = '/images/' + response.data['album_id']; }, 1500);
 
-      })
-      .catch((error) => {
-        setResponse(error.response.data['result'])
-        setSeverity("error")
-        setState({
-          open: true, ...{
-            vertical: 'top',
-            horizontal: 'center',
-          }
+        })
+        .catch((error) => {
+          setResponse(error.response.data['result'])
+          setSeverity("error")
+          setState({
+            open: true, ...{
+              vertical: 'top',
+              horizontal: 'center',
+            }
+          });
         });
-      });
     }
   };
 
@@ -134,7 +137,7 @@ function Upload() {
   const classes = useStyles();
 
   return (
-    <div style={{marginTop: "4%"}}>
+    <div style={{ marginTop: "2%" }}>
       <form onSubmit={submitForm} style={{
         display: "flex",
         justifyContent: "center",
@@ -145,27 +148,33 @@ function Upload() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            '& .MuiTextField-root': { width: '25ch' },
+            '& .MuiTextField-root': { width: '30ch' },
             justifyContent: "space-between",
-            p: 8, border: '1px solid #c9dcf4',
-            background: "linear-gradient(#a1e5f3, #ecfafd)"
+            p: 8,
+            background: "#ffffffb0",
+            borderRadius: "20px"
 
           }}>
-          <Button variant="outlined" sx={{
+          <h2 className="font-link" sx={{ width: "70%", marginLeft: "40px", background: "white" }}>
+            Upload Image
+          </h2>
+          {/* <Button variant="outlined" sx={{
             width: "70%", marginBottom: "10px", marginLeft: "40px", border: 'none', '&:hover': {
               background: 'none',
               border: 'none'
             },
+
+            fontFamily: "Poppins"
           }}>
             Upload Image
-          </Button>
+          </Button> */}
           <Box
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center"
             }}>
-            <img className="preview" src={src} alt={alt} style={{ width: "250px", marginTop: "5px", marginBottom: "10px" }} />
+            <img className="preview" src={src} alt={alt} style={{ width: "300px",  marginBottom: "15px",  borderRadius: "10px"}} />
 
           </Box>
           <Autocomplete
@@ -219,16 +228,16 @@ function Upload() {
             renderInput={(params) => (
               <TextField {...params}
                 label="Album Name"
-                InputLabelProps={{ style: { color: "#1976d2", borderColor: "#1976d2" } }}
+                InputLabelProps={{ style: { color: "#000000a8", borderColor: "#000000a8" } }}
                 className={classes.root}
               />
             )}
           />
 
           {/* <TextField label="Album Name" color="secondary" id="margin-normal" margin="normal" focused onChange={(e) => setAlbum(e.target.value)} /> */}
-          <TextField label="Tags" color="info" id="margin-normal" margin="normal" onChange={(e) => setTags(e.target.value)} className={classes.root}/>
+          <TextField label="Tags" color="info" id="margin-normal" margin="normal" onChange={(e) => setTags(e.target.value)} className={classes.root} />
           <Box pt={1} sx={{
-            color: "#1976d2",
+            color: "#000000a8",
             alignItems: 'center',
             justifyContent: "center",
             display: 'flex',
@@ -240,15 +249,18 @@ function Upload() {
               borderRadius: "50%",
               borderStyle: "solid",
               borderWidth: "2px",
-              borderColor: "#1976d2"
+              borderColor: "#000000a8"
             }}><BackupIcon /> </label>
             <input type="file" id="fileUpload" onChange={fileHandler} style={{ display: 'none' }} />
 
           </Box>
 
           <Button variant="contained" type="submit" endIcon={<CloudDoneIcon />}
-            sx={{ width: "70%", marginTop: "10px", marginLeft: "40px", }}>
-            Submit
+            sx={{ width: "70%", marginTop: "10px", marginLeft: "40px", background: "#000000a8", textTransform: "capitalize", }} >
+            <span className="font-link">
+              Submit
+
+            </span>
           </Button>
 
 
@@ -266,7 +278,7 @@ function Upload() {
         <Alert severity={severity}>{apiResponse}</Alert>
       </Snackbar>
 
-    </div>
+    </div >
   );
 }
 export default Upload;

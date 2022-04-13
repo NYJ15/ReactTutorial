@@ -31,37 +31,56 @@ const Albums = () => {
     return (
 
         <Grid container spacing={2} justifyContent="center"
-            alignItems="center" minHeight="50vh">
+            alignItems="center" minHeight="50vh" className="font-link">
 
             <Grid item xs={5}>
                 <ThemeProvider theme={lightTheme}>
-                    <h1 style={{ marginLeft: "40%" }}>Albums</h1>
                     {albums && albums.length > 0 ?
                         <Box
                             sx={{
-                                p: 2,
-                                bgcolor: 'background.default',
+                                p: 6,
                                 display: 'grid',
                                 gridTemplateColumns: { md: '1fr 1fr' },
                                 gap: 2,
-
+                                background: "#ffffffb0",
+                                borderRadius: "20px",
+                                marginTop: "10%"
                             }}
                         >
+                           
+                            <h2><b>
+                                
+                                Albums
+                            </b></h2>
+                            <br />
                             {albums.map((item) => (
                                 <Link to={"/images/" + item.album_id} key={item.album_id} style={{ textDecoration: 'none', }}>
                                     <Item key={item.album_id} elevation="8" sx={{
                                         display: 'flex',
-                                        alignItems: 'center', justifyContent: 'left'
+                                        alignItems: 'center', justifyContent: 'left',
+                                        borderRadius: "5px",
                                     }}>
                                         <FolderIcon sx={{ p: 1 }} />
-                                        {item.album_name}
+                                        <span className="font-link">{item.album_name}</span>
                                     </Item>
                                 </Link>
                             ))}
                         </Box>
                         :
-
-                        <h4 style={{ marginLeft: "43%" }}>No Albums</h4>
+                        <Box
+                            sx={{
+                                p: 6,
+                                display: 'grid',
+                                gridTemplateColumns: { md: '1fr 1fr' },
+                                gap: 2,
+                                background: "#ffffffb0",
+                                borderRadius: "20px"
+                            }}
+                        >
+                            <h1 style={{ marginLeft: "40%" }}>Albums</h1>
+                            <br />
+                            <h4 style={{ marginLeft: "43%" }}>No Albums</h4>
+                        </Box>
                     }
                 </ThemeProvider>
             </Grid>

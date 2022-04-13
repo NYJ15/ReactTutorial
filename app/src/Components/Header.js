@@ -105,15 +105,15 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ background: "black" }}>
+      <AppBar position="static" style={{ background: "#000000ad" }}>
         <Toolbar>
-          <img src="test.png" alt="logo" style={{ maxWidth: 150, marginRight: '10px' }} onClick={changeRouteHome} />
+          <img src="https://nyj15.s3.us-east-2.amazonaws.com/iconcamera.png" alt="logo" style={{ maxWidth: 80, marginRight: '10px' }} onClick={changeRouteHome} />
           <Box sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: '20px' }}>
 
             <Typography
               key="My Albums"
               onClick={changeRouteMyAlbums}
-              sx={{ color: 'white', fontFamily: 'Halimum', fontSize: 18 }}
+              sx={{ color: 'white', fontSize: 18, fontFamily: "Poppins" }}
             >
               My Albums
             </Typography>
@@ -123,8 +123,9 @@ export default function Header() {
 
             <Typography
               key="Upload"
+              className="font-link"
               onClick={changeRouteUpload}
-              sx={{ color: 'white', fontFamily: 'Raleway', fontSize: 18 }}
+              sx={{ color: 'white', fontSize: 18, fontFamily: "Poppins" }}
             >
               Upload Image
             </Typography>
@@ -136,7 +137,8 @@ export default function Header() {
             <Typography
               key="Search"
               onClick={changeRouteSearch}
-              sx={{ color: 'white', fontFamily: 'Raleway', fontSize: 18 }}
+              className="font-link"
+              sx={{ color: 'white', fontSize: 18, fontFamily: "Poppins" }}
             >
               Search
             </Typography>
