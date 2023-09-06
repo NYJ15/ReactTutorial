@@ -1,5 +1,9 @@
 # Photo App
 
+A web app to store and organize images, like Google Photos, and implemented 
+automated tag-based, name-based, and text-based image
+search functionality to seek images.
+
 ## Available Scripts
 
 In the project directory, you can run:
